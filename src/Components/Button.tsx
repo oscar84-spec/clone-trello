@@ -6,7 +6,7 @@ type ButtonProps = {
 
 const Button = ({ children, styles }: ButtonProps) => {
   return (
-    <button className={`w-max h-8 rounded-md px-3 outline-none ${styles}`}>
+    <button className={`rounded-md px-3 outline-none ${styles}`}>
       {children}
     </button>
   );

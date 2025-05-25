@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import type { NavLinks } from "../types";
 
 type NavbarProps = {
-  navStyle: string;
+  navStyle?: string;
   listStyle: string;
   navLinks: NavLinks;
   title?: string;
