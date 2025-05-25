@@ -1,0 +1,36 @@
+.menu-icon {
+  width: 30px;
+  height: 30px;
+  position: relative;
+  cursor: pointer;
+}
+
+.line {
+  display: block;
+  position: absolute;
+  width: 30px;
+  height: 3px;
+  background-color: #fff;
+  -webkit-transition: all 1s ease-in-out;
+  transition: all 0.3s ease-in-out;
+  border-radius: 10px;
+}
+.line:first-child {
+  top: 4px;
+}
+.line:nth-child(2) {
+  top: 14px;
+}
+.line:last-child {
+  top: 24px;
+}
+
+.menu-icon.active .line:first-child {
+  transform: translateY(10px) rotate(45deg);
+}
+.menu-icon.active .line:nth-child(2) {
+  opacity: 0;
+}
+.menu-icon.active .line:last-child {
+  transform: translateY(-10px) rotate(-45deg);
+}
