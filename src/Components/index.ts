@@ -6,3 +6,6 @@ export { default as Sidebar } from "./Sidebar";
 export { default as Presentation } from "./Presentation";
 export { default as SectionLayaut } from "./SectionLayaut";
 export { default as Footer } from "./Footer";
+export { default as Form } from "./Form";
+export { default as Input } from "./Input";
+export { default as FormLayaut } from "./FormLayaut";
