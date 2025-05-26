@@ -10,7 +10,7 @@ type HeaderProps = {
 const Header = ({ styles, children }: HeaderProps) => {
   return (
     <header
-      className={`w-full h-14 px-5 flex items-center justify-between lg:px-10 xl:px-20 ${styles} `}
+      className={`w-full h-14 px-5 flex items-center justify-between lg:px-10 xl:px-20 fixed md:static ${styles} `}
     >
       <div className="flex items-center gap-5 lg:gap-10">
         <Link to="/">

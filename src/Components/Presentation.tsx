@@ -2,7 +2,7 @@ import { Button } from "./index";
 
 const Presentation = () => {
   return (
-    <section className="w-full pt-10 px-5 flex flex-col gap-10 lg:flex-row lg:items-center lg:px-10 lg:h-[calc(100vh-56px)] xl:px-20">
+    <section className="w-full pt-10 px-5 flex flex-col gap-10 mt-14 md:mt-0 lg:flex-row lg:items-center lg:px-10 lg:h-[calc(100vh-56px)] xl:px-20">
       <div className="flex flex-col gap-5 lg:w-1/2">
         <h1 className="text-4xl text-text-color font-bold md:text-5xl lg:text-6xl">
           Organiza todo, juntos

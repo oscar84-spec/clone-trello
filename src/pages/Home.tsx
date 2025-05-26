@@ -16,11 +16,11 @@ const Home = () => {
 
   return (
     <main
-      className={`w-full h-screen bg-body-bg overflow-x-hidden ${
+      className={`w-full h-screen bg-body-bg overflow-x-hidden relative ${
         isOpen ? "overflow-y-hidden" : ""
       } `}
     >
-      <Header styles="bg-header-bg relative">
+      <Header styles="bg-header-bg">
         <div>
           <MenuIcon />
           <div className="hidden md:flex md:items-center md:gap-3 ">
