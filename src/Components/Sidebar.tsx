@@ -15,10 +15,16 @@ const Sidebar = () => {
     >
       <Navbar navLinks={navLinks} listStyle="flex flex-col space-y-5" />
       <div className=" flex flex-col items-center gap-3">
-        <Button styles="w-full h-8 bg-btn-primary-bg text-btn-primary-text transition-colors ease-in-out duration-300 hover:cursor-pointer hover:bg-btn-primary-hover">
+        <Button
+          styles="w-full h-8 bg-btn-primary-bg text-btn-primary-text transition-colors ease-in-out duration-300 hover:cursor-pointer hover:bg-btn-primary-hover"
+          type="button"
+        >
           Iniciar Sesión
         </Button>
-        <Button styles="w-full h-8 bg-btn-secondary-bg text-btn-secondary-text transition-colors ease-in-out duration-300 hover:cursor-pointer hover:bg-btn-secondary-hover">
+        <Button
+          styles="w-full h-8 bg-btn-secondary-bg text-btn-secondary-text transition-colors ease-in-out duration-300 hover:cursor-pointer hover:bg-btn-secondary-hover"
+          type="button"
+        >
           Regístrate
         </Button>
       </div>

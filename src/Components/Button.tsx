@@ -2,11 +2,12 @@ type ButtonProps = {
   children: React.ReactNode;
   styles?: string;
   onClick?: () => void;
+  type: "button" | "submit" | "reset";
 };
 
-const Button = ({ children, styles }: ButtonProps) => {
+const Button = ({ children, styles, type }: ButtonProps) => {
   return (
-    <button className={`rounded-md px-3 outline-none ${styles}`}>
+    <button type={type} className={`rounded-md px-3 outline-none ${styles}`}>
       {children}
     </button>
   );
