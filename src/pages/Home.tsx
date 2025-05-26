@@ -4,6 +4,7 @@ import {
   Sidebar,
   Presentation,
   SectionLayaut,
+  Footer,
 } from "../Components";
 import { MenuIcon } from "../assets/icons";
 import { useToggleSideBar } from "../store/slices/UI";
@@ -101,7 +102,7 @@ const Home = () => {
                 </ul>
                 <Button
                   type="button"
-                  styles="w-full h-10 bg-btn-secondary-bg text-text-light"
+                  styles="w-full h-10 bg-btn-secondary-bg text-text-light cursor-pointer transition-colors ease-in-out duration-300 hover:bg-btn-secondary-hover"
                 >
                   {plan.buttonText}
                 </Button>
@@ -110,6 +111,7 @@ const Home = () => {
           })}
         </div>
       </SectionLayaut>
+      <Footer />
     </main>
   );
 };

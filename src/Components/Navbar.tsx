@@ -6,6 +6,7 @@ type NavbarProps = {
   listStyle: string;
   navLinks: NavLinks;
   title?: string;
+  gridArea?: string;
 };
 
 const Navbar = ({
@@ -13,14 +14,15 @@ const Navbar = ({
   listStyle,
   navLinks,
   title,
+  gridArea,
 }: NavbarProps) => {
   return (
-    <nav className={navStyle}>
+    <nav className={navStyle + " " + gridArea}>
       <h3 className="text-lg text-text-light/85 font-medium">{title}</h3>
       <ul className={listStyle}>
         {navLinks.map((link, index) => (
           <li
-            className="text-md text-text-light/80 transition-all ease-in-out duration-300 hover:text-text-light hover:scale-105"
+            className="w-max text-md text-text-light/80 transition-all ease-in-out duration-300 hover:text-text-light hover:scale-105"
             key={index}
           >
             <Link to="">{link}</Link>

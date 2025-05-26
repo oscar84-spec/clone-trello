@@ -1,0 +1,30 @@
+@media screen and (min-width: 768px) {
+  .footer {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: 1fr auto auto;
+    grid-template-areas:
+      "logo producto recursos empresa"
+      "divider divider divider divider"
+      "copyright copyright copyright copyright";
+    gap: 10px;
+  }
+  .logo {
+    grid-area: logo;
+  }
+  .producto {
+    grid-area: producto;
+  }
+  .recursos {
+    grid-area: recursos;
+  }
+  .empresa {
+    grid-area: empresa;
+  }
+  .divider {
+    grid-area: divider;
+  }
+  .copyright {
+    grid-area: copyright;
+  }
+}
