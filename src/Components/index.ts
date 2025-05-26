@@ -4,3 +4,4 @@ export { default as Navbar } from "./Navbar";
 export { default as Button } from "./Button";
 export { default as Sidebar } from "./Sidebar";
 export { default as Presentation } from "./Presentation";
+export { default as SectionLayaut } from "./SectionLayaut";

@@ -5,7 +5,7 @@ type TeamIconProps = {
 };
 
 const TeamIcon = ({ styles }: TeamIconProps) => {
-  return <LuUsers className={styles} />;
+  return <LuUsers className={`size-7 text-icon-color ${styles}`} />;
 };
 
 export default TeamIcon;
