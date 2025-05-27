@@ -6,7 +6,10 @@ type FormProps = {
 
 const Form = ({ title, handleSubmit, children }: FormProps) => {
   return (
-    <form className="w-full absolute top-16 p-5" onSubmit={handleSubmit}>
+    <form
+      className="w-full absolute top-16 p-5 md:w-md "
+      onSubmit={handleSubmit}
+    >
       <h3 className="text-2xl text-center font-medium text-text-color">
         {title}
       </h3>

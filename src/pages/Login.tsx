@@ -1,56 +1,34 @@
 import { FormLayaut, Form, Input, Button } from "../Components";
 import { EyeIcon, EyeSlashIcon } from "../assets/icons";
 import { useForm } from "react-hook-form";
-import type { ValidationForm } from "../types";
-import { validationsRegister } from "../validations/register";
+import { validationsLogin } from "../validations/login";
+import type { ValidationFormLogin } from "../types";
 import { useShowPassword } from "../store/slices/UI";
 
-const Register = () => {
+const Login = () => {
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<ValidationForm>();
+  } = useForm<ValidationFormLogin>();
 
   const { showPassword } = useShowPassword();
 
-  const onSubmit = (data: ValidationForm) => {
-    console.log(data);
+  const onSubmit = (data: ValidationFormLogin) => {
+    console.log("Datos del formulario:", data);
     reset();
   };
 
   return (
     <main className="relative w-full h-screen overflow-x-hidden md:flex md:justify-center">
       <FormLayaut />
-      <Form title="Registro" handleSubmit={handleSubmit(onSubmit)}>
-        <div className="flex flex-col gap-2">
-          <Input
-            type="text"
-            placeholder="Nombre(s)"
-            {...register("name", validationsRegister.name)}
-          />
-          {errors.name && (
-            <span className="text-sm text-red-500">{errors.name.message}</span>
-          )}
-        </div>
-        <div className="flex flex-col gap-2">
-          <Input
-            type="text"
-            placeholder="Apellido(s)"
-            {...register("lastName", validationsRegister.lastName)}
-          />
-          {errors.lastName && (
-            <span className="text-sm text-red-500">
-              {errors.lastName.message}
-            </span>
-          )}
-        </div>
+      <Form title="Iniciar Sesión" handleSubmit={handleSubmit(onSubmit)}>
         <div className="flex flex-col gap-2">
           <Input
             type="email"
             placeholder="Correo Electrónico"
-            {...register("email", validationsRegister.email)}
+            {...register("email", validationsLogin.email)}
           />
           {errors.email && (
             <span className="text-sm text-red-500">{errors.email.message}</span>
@@ -61,7 +39,7 @@ const Register = () => {
             <Input
               type={showPassword ? "text" : "password"}
               placeholder="Contraseña"
-              {...register("password", validationsRegister.password)}
+              {...register("password", validationsLogin.password)}
             />
             {showPassword ? (
               <EyeSlashIcon styles="absolute top-1/2 right-2 -translate-y-1/2 text-text-color/30 cursor-pointer" />
@@ -79,11 +57,11 @@ const Register = () => {
           type="submit"
           styles="w-full h-10 bg-btn-primary-bg text-btn-primary-text hover:bg-btn-primary-hover cursor-pointer"
         >
-          Registrarme
+          Iniciar Sesión
         </Button>
       </Form>
     </main>
   );
 };
 
-export default Register;
+export default Login;

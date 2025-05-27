@@ -60,3 +60,34 @@ export type ValidationForm = {
     };
   };
 };
+
+export type ValidationFormLogin = {
+  email: {
+    required: {
+      value: boolean;
+      message: string;
+    };
+    pattern: {
+      value: RegExp;
+      message: string;
+    };
+  };
+  password: {
+    required: {
+      value: boolean;
+      message: string;
+    };
+    minLength: {
+      value: number;
+      message: string;
+    };
+    maxLength: {
+      value: number;
+      message: string;
+    };
+    pattern: {
+      value: RegExp;
+      message: string;
+    };
+  };
+};
