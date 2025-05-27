@@ -11,6 +11,7 @@ import { useToggleSideBar } from "../store/slices/UI";
 import { cards } from "../mockData/features";
 import { plans } from "../mockData/pricing";
 import { Link } from "react-router-dom";
+import { navLinks } from "../mockData/navLinks";
 
 const Home = () => {
   const { isOpen } = useToggleSideBar();
@@ -21,7 +22,7 @@ const Home = () => {
         isOpen ? "overflow-y-hidden" : ""
       } `}
     >
-      <Header styles="bg-header-bg">
+      <Header styles="bg-header-bg" navLinks={navLinks}>
         <div>
           <MenuIcon />
           <div className="hidden md:flex md:items-center md:gap-3 ">

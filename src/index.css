@@ -33,13 +33,13 @@
   --color-dashboard-text-color: #eaeaea;
 
   /* Botones */
-  --color-dashboard-btn-primary-bg: #3b82f6;
+  --color-dashboard-btn-primary-bg: #6c63ff; /* Azul lavanda saturado */
   --color-dashboard-btn-primary-text: #ffffff;
-  --color-dashboard-btn-primary-hover: #2563eb;
+  --color-dashboard-btn-primary-hover: #574fe3; /* Variante más oscura del lavanda */
 
-  --color-dashboard-btn-secondary-bg: #ff5ec4;
+  --color-dashboard-btn-secondary-bg: #a950c1; /* Fucsia violeta más sobrio */
   --color-dashboard-btn-secondary-text: #ffffff;
-  --color-dashboard-btn-secondary-hover: #e645ae;
+  --color-dashboard-btn-secondary-hover: #8e40a8; /* Más oscuro y profundo */
 
   /* Sidebar */
   --color-dashboard-sidebar-bg: #2c283c;
