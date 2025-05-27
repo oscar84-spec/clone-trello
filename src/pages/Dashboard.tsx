@@ -1,11 +1,11 @@
-import { Header, Button } from "../Components";
+import { Header, Button, SectionKanban } from "../Components";
 import { dashLinks } from "../mockData/dashboard";
 import { AddIcon, AccountIcon } from "../assets/icons";
 
 const Dashboard = () => {
   return (
-    <main className="w-full h-screen bg-dashboard-page-bg relative overflow-x-hidden">
-      <Header navLinks={dashLinks} styles="bg-dashboard-header-bg">
+    <main className="w-full h-screen bg-dashboard-page-bg">
+      <Header navLinks={dashLinks} styles="bg-dashboard-header-bg static">
         <div className="flex items-center gap-3">
           <Button
             type="button"
@@ -21,6 +21,7 @@ const Dashboard = () => {
           </Button>
         </div>
       </Header>
+      <SectionKanban />
     </main>
   );
 };

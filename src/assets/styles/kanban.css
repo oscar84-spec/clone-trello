@@ -1,0 +1,16 @@
+.lista-container {
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto 1fr auto;
+  grid-template-areas: "nombre" "lista" "button";
+  gap: 10px;
+}
+.nombre {
+  grid-area: nombre;
+}
+.lista {
+  grid-area: lista;
+}
+.button-add {
+  grid-area: button;
+}
