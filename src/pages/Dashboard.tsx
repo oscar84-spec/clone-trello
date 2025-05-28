@@ -1,4 +1,10 @@
-import { Header, Button, SectionKanban, AddBoard } from "../Components";
+import {
+  Header,
+  Button,
+  SectionKanban,
+  AddBoard,
+  AddList,
+} from "../Components";
 import { dashLinks } from "../mockData/dashboard";
 import { AddIcon, AccountIcon } from "../assets/icons";
 import { useOpenModal } from "../store/slices/UI";
@@ -25,6 +31,7 @@ const Dashboard = () => {
         </div>
       </Header>
       <AddBoard />
+      <AddList />
       <SectionKanban />
     </main>
   );

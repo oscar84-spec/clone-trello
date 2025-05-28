@@ -7,12 +7,14 @@ import {
   AddIcon,
 } from "../assets/icons";
 import { Button } from "./index";
+import { useOpenModal } from "../store/slices/UI";
 
 type SidebarDashProps = {
   areas: string;
 };
 
 const SidebarDash = ({ areas }: SidebarDashProps) => {
+  const { toggle } = useOpenModal();
   return (
     <aside
       className={`hidden w-full bg-dashboard-sidebar-bg rounded-md p-2 md:flex flex-col gap-5 ${areas}`}
@@ -54,7 +56,8 @@ const SidebarDash = ({ areas }: SidebarDashProps) => {
         </Button>
         <Button
           type="button"
-          styles="w-full h-10 pl-2 bg-transparent flex items-center justify-start gap-2 hover:bg-dashboard-sidebar-hover-bg"
+          styles="w-full h-10 pl-2 bg-transparent flex items-center justify-start gap-2 hover:bg-dashboard-sidebar-hover-bg cursor-pointer"
+          onClick={toggle}
         >
           <AddIcon styles="size-5 text-icon-color" />
           <span className="text-sm text-dashboard-text-color">

@@ -1,19 +1,20 @@
 import { FormDash, Input, Button } from "./index";
+import { useOpenModalList } from "../store/slices/UI";
 import { useForm } from "react-hook-form";
-import type { ValidationFormBoard } from "../types";
-import { validationBoard } from "../validations/board/board";
-import { useOpenModal } from "../store/slices/UI";
+import type { ValidationFormList } from "../types";
+import { validationList } from "../validations/board/list";
 
-const AddBoard = () => {
-  const { isOpen, toggle } = useOpenModal();
+const AddList = () => {
+  const { isOpen, toggle } = useOpenModalList();
+
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<ValidationFormBoard>();
+  } = useForm<ValidationFormList>();
 
-  const onSubmit = (data: ValidationFormBoard) => {
+  const onSubmit = (data: ValidationFormList) => {
     console.log(data);
     toggle();
     reset();
@@ -21,16 +22,16 @@ const AddBoard = () => {
 
   return (
     <FormDash
-      title="Agregar Tablero"
-      handleSubmit={handleSubmit(onSubmit)}
+      title="Agregar Lista"
       isOpen={isOpen}
+      handleSubmit={handleSubmit(onSubmit)}
     >
       <div className="flex flex-col gap-2">
         <Input
           type="text"
-          placeholder="Nombre del Tablero"
+          placeholder="Nombre de la Lista"
           styles="placeholder:text-dashboard-text-color/50 text-dashboard-text-color"
-          {...register("title", validationBoard.title)}
+          {...register("title", validationList.title)}
         />
         {errors.title && (
           <span className="text-sm text-red-500">{errors.title.message}</span>
@@ -41,7 +42,7 @@ const AddBoard = () => {
           type="submit"
           styles="w-full h-10 bg-dashboard-btn-primary-bg/20 text-dashboard-btn-primary-text cursor-pointer transition-colors ease-in-out duration-300 hover:bg-dashboard-btn-primary-hover/20"
         >
-          Crear Tablero
+          Crear Lista
         </Button>
         <Button
           type="button"
@@ -55,4 +56,4 @@ const AddBoard = () => {
   );
 };
 
-export default AddBoard;
+export default AddList;

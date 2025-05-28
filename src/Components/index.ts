@@ -17,3 +17,4 @@ export { default as CardContent } from "./CardContent";
 export { default as Badge } from "./Badge";
 export { default as FormDash } from "./FormDash";
 export { default as AddBoard } from "./AddBoard";
+export { default as AddList } from "./AddList";

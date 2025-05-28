@@ -1,8 +1,10 @@
 import { Button, ListContent } from "./index";
+import { useOpenModalList } from "../store/slices/UI";
 import "../assets/styles/kanban.css";
 
 type KanbanContentProps = { areas: string };
 const KanbanContent = ({ areas }: KanbanContentProps) => {
+  const { toggle } = useOpenModalList();
   return (
     <section
       className={`w-full h-full bg-dashboard-kanban-bg rounded-md p-2 flex flex-col gap-2 overflow-hidden ${areas}`}
@@ -35,6 +37,7 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
         <Button
           type="button"
           styles="w-full h-8 bg-dashboard-btn-secondary-bg text-dashboard-btn-secondary-text shrink-0 md:w-68 cursor-pointer transition-colors ease-in-out duration-300 hover:bg-dashboard-btn-secondary-hover"
+          onClick={toggle}
         >
           Agregar lista
         </Button>

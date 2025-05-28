@@ -1,14 +1,13 @@
 import "../assets/styles/modal.css";
-import { useOpenModal } from "../store/slices/UI";
 
 type FormDashProps = {
   children: React.ReactNode;
   handleSubmit: () => void;
   title: string;
+  isOpen: boolean;
 };
 
-const FormDash = ({ children, handleSubmit, title }: FormDashProps) => {
-  const { isOpen } = useOpenModal();
+const FormDash = ({ children, handleSubmit, title, isOpen }: FormDashProps) => {
   return (
     <div
       className={`menu fixed top-0 left-0 w-screen h-screen bg-stone-950/20 flex justify-center items-center z-50 
