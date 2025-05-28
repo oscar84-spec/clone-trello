@@ -125,3 +125,40 @@ export type ValidationFormList = {
     };
   };
 };
+
+export type ValidationFormCard = {
+  title: {
+    required: {
+      value: boolean;
+      message: string;
+    };
+    minLength: {
+      value: number;
+      message: string;
+    };
+    maxLength: {
+      value: number;
+      message: string;
+    };
+  };
+  description: {
+    required: {
+      value: boolean;
+      message: string;
+    };
+    minLength: {
+      value: number;
+      message: string;
+    };
+    maxLength: {
+      value: number;
+      message: string;
+    };
+  };
+  priority: {
+    required: {
+      value: boolean;
+      message: string;
+    };
+  };
+};

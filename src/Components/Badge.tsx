@@ -1,6 +1,6 @@
 type BadgeProps = {
   children: React.ReactNode;
-  priority: "Urgente" | "Normal" | "Bajo";
+  priority: string;
 };
 
 const Badge = ({ children, priority }: BadgeProps) => {

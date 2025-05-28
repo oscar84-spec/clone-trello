@@ -4,6 +4,7 @@ import {
   SectionKanban,
   AddBoard,
   AddList,
+  AddCard,
 } from "../Components";
 import { dashLinks } from "../mockData/dashboard";
 import { AddIcon, AccountIcon } from "../assets/icons";
@@ -32,6 +33,7 @@ const Dashboard = () => {
       </Header>
       <AddBoard />
       <AddList />
+      <AddCard />
       <SectionKanban />
     </main>
   );
