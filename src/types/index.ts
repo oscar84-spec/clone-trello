@@ -91,3 +91,20 @@ export type ValidationFormLogin = {
     };
   };
 };
+
+export type ValidationFormBoard = {
+  title: {
+    required: {
+      value: boolean;
+      message: string;
+    };
+    minLength: {
+      value: number;
+      message: string;
+    };
+    maxLength: {
+      value: number;
+      message: string;
+    };
+  };
+};

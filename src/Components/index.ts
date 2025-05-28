@@ -15,3 +15,5 @@ export { default as KanbanContent } from "./KanbanContent";
 export { default as ListContent } from "./ListContent";
 export { default as CardContent } from "./CardContent";
 export { default as Badge } from "./Badge";
+export { default as FormDash } from "./FormDash";
+export { default as AddBoard } from "./AddBoard";

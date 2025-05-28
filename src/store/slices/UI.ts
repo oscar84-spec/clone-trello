@@ -10,6 +10,11 @@ interface ShowPasswordState {
   toggle: () => void;
 }
 
+interface OpenModalState {
+  isOpen: boolean;
+  toggle: () => void;
+}
+
 export const useToggleSideBar = create<OpenSideBarState>((set) => ({
   isOpen: false,
   toggle: () => set((state) => ({ isOpen: !state.isOpen })),
@@ -18,4 +23,9 @@ export const useToggleSideBar = create<OpenSideBarState>((set) => ({
 export const useShowPassword = create<ShowPasswordState>((set) => ({
   showPassword: false,
   toggle: () => set((state) => ({ showPassword: !state.showPassword })),
+}));
+
+export const useOpenModal = create<OpenModalState>((set) => ({
+  isOpen: false,
+  toggle: () => set((state) => ({ isOpen: !state.isOpen })),
 }));
