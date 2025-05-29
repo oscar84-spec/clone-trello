@@ -4,6 +4,10 @@ import { useForm } from "react-hook-form";
 import type { ValidationForm } from "../types";
 import { validationsRegister } from "../validations/register";
 import { useShowPassword } from "../store/slices/UI";
+import { registerUser } from "../services/users";
+import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import axios from "axios";
 
 const Register = () => {
   const {
@@ -14,10 +18,28 @@ const Register = () => {
   } = useForm<ValidationForm>();
 
   const { showPassword } = useShowPassword();
+  const naviagte = useNavigate();
+  const [errorMsg, setErrorMsg] = useState<string>("");
+  const [error, setError] = useState<boolean>(false);
 
-  const onSubmit = (data: ValidationForm) => {
-    console.log(data);
-    reset();
+  const onSubmit = async (data: ValidationForm) => {
+    try {
+      const res = await registerUser(data);
+      if (!res) {
+        alert("Hubo un error, intentelo de nuevo");
+      } else {
+        naviagte("/dashboard");
+        reset();
+      }
+    } catch (error) {
+      if (axios.isAxiosError(error)) {
+        setError(true);
+        const msg = error.response?.data?.error;
+        setErrorMsg(msg);
+      } else {
+        console.error(error);
+      }
+    }
   };
 
   return (
@@ -81,6 +103,11 @@ const Register = () => {
         >
           Registrarme
         </Button>
+        {error && (
+          <span className="text-lg text-red-500 font-medium text-center">
+            {errorMsg}
+          </span>
+        )}
       </Form>
     </main>
   );
