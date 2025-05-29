@@ -39,3 +39,14 @@ export const logoutUser = async () => {
     console.error(error);
   }
 };
+
+//Obtener perfil del usuario
+export const getUserProfile = async () => {
+  try {
+    return await api.get("/dashboard", {
+      withCredentials: true,
+    });
+  } catch (error) {
+    console.error(error);
+  }
+};

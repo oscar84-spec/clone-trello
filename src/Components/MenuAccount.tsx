@@ -4,11 +4,17 @@ import "../assets/styles/modal.css";
 import { useOpenModalMenuAccount } from "../store/slices/UI";
 import { useNavigate } from "react-router-dom";
 import { logoutUser } from "../services/users";
+import { useUserProfile } from "../store/slices/user";
+import { getUserProfile } from "../services/users";
+import { useEffect, useState } from "react";
 
 const MenuAccount = () => {
   const { isOpen, handleToggle } = useOpenModalMenuAccount();
+  const { user, setUser } = useUserProfile();
+  const [loading, setLoading] = useState<boolean>(false);
   const navigate = useNavigate();
 
+  //Cerrar Sessión
   const handleLogOut = async () => {
     const res = await logoutUser();
     if (res) {
@@ -16,22 +22,41 @@ const MenuAccount = () => {
       handleToggle();
     }
   };
+
+  //Obtener perfil del usuario
+  useEffect(() => {
+    const getUserData = async () => {
+      try {
+        const res = await getUserProfile();
+        setUser(res?.data);
+        setLoading(false);
+      } catch (error) {
+        console.error(error);
+        setLoading(false);
+      }
+    };
+
+    getUserData();
+  }, [setUser]);
+  if (loading) return <p>Cargando...</p>;
+  if (!user) return <p>No tienes acceso. Inicia sesión.</p>;
+  console.log(user);
   return (
     <div
       className={`menu w-full h-max p-5 absolute top-14 right-0 flex flex-col gap-2 justify-center items-center rounded-md bg-dashboard-list-bg z-40 md:w-72 md:right-5 lg:right-10 xl:right-20 ${
         isOpen ? "show" : ""
       }`}
     >
-      <span className="text-3xl bg-dashboard-sidebar-bg rounded-full w-8 h-8 flex items-center justify-center text-dashboard-text-color/70 pointer-events-none">
-        O
+      <span className="text-xl bg-dashboard-sidebar-bg rounded-full size-10 p-2 flex items-center justify-center text-dashboard-text-color/70 pointer-events-none">
+        {user.name.charAt(0).toUpperCase()}
       </span>
       <hr className="border-1 border-text-light/20 w-full" />
       <div className="w-full flex flex-col gap-2">
         <span className="w-full text-md text-dashboard-text-color/70 hover:cursor-pointer">
-          Oscar Hernández
+          {user.name} {user.lastName}
         </span>
         <span className="w-full text-md text-dashboard-text-color/70 hover:cursor-pointer">
-          oscar@gmail.com
+          {user.email}
         </span>
       </div>
       <hr className="border-1 border-text-light/20 w-full" />
