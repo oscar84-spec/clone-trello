@@ -18,3 +18,24 @@ export const registerUser = async (data: ValidationForm) => {
     withCredentials: true,
   });
 };
+
+//Verificar Sesión
+export const verifySession = async () => {
+  try {
+    const res = await api.get("/dashboard", {
+      withCredentials: true,
+    });
+    return res.data;
+  } catch (error) {
+    console.error(error);
+  }
+};
+
+//Cerrar Sessión
+export const logoutUser = async () => {
+  try {
+    return await api.post("/logout", {}, { withCredentials: true });
+  } catch (error) {
+    console.error(error);
+  }
+};
