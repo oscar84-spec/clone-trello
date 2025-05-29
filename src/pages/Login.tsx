@@ -4,6 +4,8 @@ import { useForm } from "react-hook-form";
 import { validationsLogin } from "../validations/login";
 import type { ValidationFormLogin } from "../types";
 import { useShowPassword } from "../store/slices/UI";
+import { loginUser } from "../services/users";
+import { useNavigate } from "react-router-dom";
 
 const Login = () => {
   const {
@@ -15,9 +17,20 @@ const Login = () => {
 
   const { showPassword } = useShowPassword();
 
-  const onSubmit = (data: ValidationFormLogin) => {
-    console.log("Datos del formulario:", data);
-    reset();
+  const navigate = useNavigate();
+
+  const onSubmit = async (data: ValidationFormLogin) => {
+    try {
+      const res = await loginUser(data);
+      if (!res) {
+        alert("Credenciales incorrectas");
+      } else {
+        navigate("/dashboard");
+        reset();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
