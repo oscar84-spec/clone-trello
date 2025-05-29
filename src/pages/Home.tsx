@@ -22,7 +22,7 @@ const Home = () => {
         isOpen ? "overflow-y-hidden" : ""
       } `}
     >
-      <Header styles="bg-header-bg" navLinks={navLinks}>
+      <Header styles="bg-header-bg" navLinks={navLinks} pathLogo="/">
         <div>
           <MenuIcon />
           <div className="hidden md:flex md:items-center md:gap-3 ">

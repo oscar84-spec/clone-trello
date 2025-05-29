@@ -6,15 +6,16 @@ type HeaderProps = {
   styles?: string;
   children: React.ReactNode;
   navLinks: NavLinks;
+  pathLogo: string;
 };
 
-const Header = ({ styles, children, navLinks }: HeaderProps) => {
+const Header = ({ styles, children, navLinks, pathLogo }: HeaderProps) => {
   return (
     <header
       className={`w-full h-14 px-5 flex items-center justify-between lg:px-10 xl:px-20 z-50 fixed md:static ${styles} `}
     >
       <div className="flex items-center gap-5 lg:gap-10">
-        <Link to="/">
+        <Link to={pathLogo}>
           <Logo />
         </Link>
         <Navbar

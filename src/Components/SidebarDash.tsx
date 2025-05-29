@@ -26,7 +26,7 @@ const SidebarDash = ({ areas }: SidebarDashProps) => {
       <div className="w-full flex flex-col gap-2 pl-2 lg:pl-5">
         <Button
           type="button"
-          styles="w-full h-10 pl-2 bg-transparent flex items-center justify-start gap-2 hover:bg-dashboard-sidebar-hover-bg"
+          styles="w-full h-10 pl-2 bg-transparent flex items-center justify-start gap-2 hover:bg-dashboard-sidebar-hover-bg hover:cursor-pointer"
         >
           <StarIcon styles="size-5 text-icon-color" />
           <span className="text-sm text-dashboard-text-color">
@@ -35,7 +35,7 @@ const SidebarDash = ({ areas }: SidebarDashProps) => {
         </Button>
         <Button
           type="button"
-          styles="w-full h-10 pl-2 bg-transparent flex items-center justify-start gap-2 hover:bg-dashboard-sidebar-hover-bg"
+          styles="w-full h-10 pl-2 bg-transparent flex items-center justify-start gap-2 hover:bg-dashboard-sidebar-hover-bg hover:cursor-pointer"
         >
           <TeamIcon styles="size-5 text-icon-color" />
           <span className="text-sm text-dashboard-text-color">
@@ -44,7 +44,7 @@ const SidebarDash = ({ areas }: SidebarDashProps) => {
         </Button>
         <Button
           type="button"
-          styles="w-full h-10 pl-2 bg-transparent flex items-center justify-start gap-2 hover:bg-dashboard-sidebar-hover-bg"
+          styles="w-full h-10 pl-2 bg-transparent flex items-center justify-start gap-2 hover:bg-dashboard-sidebar-hover-bg hover:cursor-pointer"
         >
           <ArrowDownIcon styles="size-3 text-icon-color" />
 
