@@ -1,17 +1,65 @@
 import { Button, ListContent } from "./index";
 import { useOpenModalList } from "../store/slices/UI";
 import "../assets/styles/kanban.css";
+import { useState, useEffect } from "react";
+import { useGetBoardByIdStore } from "../store/slices/kanban";
+import { getBoardById } from "../services/kanban";
+import { useBoardSelected } from "../store/slices/kanban";
+import { useBoardIdSelected } from "../store/slices/kanban";
 
 type KanbanContentProps = { areas: string };
 const KanbanContent = ({ areas }: KanbanContentProps) => {
   const { toggle } = useOpenModalList();
+  const [loading, setLoading] = useState<boolean>(false);
+  const [error, setError] = useState<string | null>(null);
+  const { board } = useGetBoardByIdStore();
+  const { boardSelected, setBoardSelected } = useBoardSelected();
+  const { boardId } = useBoardIdSelected();
+
+  useEffect(() => {
+    const loadBoard = async () => {
+      setLoading(true);
+      setError(null);
+
+      try {
+        if (board.length === 0 && !boardId) {
+          setError("No hay tableros disponibles");
+          return;
+        }
+
+        const idToFetch = boardId || board[0]._id;
+        const res = await getBoardById(idToFetch);
+        setBoardSelected(res.data);
+      } catch (error) {
+        console.error(error);
+        setError("Error al obtener tablero");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    loadBoard();
+  }, [board, boardId, setBoardSelected]);
+
+  if (loading || error) {
+    return (
+      <div className="w-full h-full bg-dashboard-kanban-bg rounded-md p-2 flex flex-col gap-2 overflow-hidden">
+        <p className="text-md font-medium text-text-light">
+          {loading
+            ? "Cargando tablero..."
+            : error || "No hay tableros disponibles"}
+        </p>
+      </div>
+    );
+  }
+
   return (
     <section
       className={`w-full h-full bg-dashboard-kanban-bg rounded-md p-2 flex flex-col gap-2 overflow-hidden ${areas}`}
     >
       <div className="flex items-center justify-between px-2">
         <h3 className="text-xl text-dashboard-text-color font-medium pointer-events-none">
-          Nombre del Tablero
+          {boardSelected?.title}
         </h3>
         <div className="flex  gap-2 items-center">
           <Button

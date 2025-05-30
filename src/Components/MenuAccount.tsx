@@ -8,6 +8,7 @@ import { useUserProfile } from "../store/slices/user";
 import { getUserProfile } from "../services/users";
 import { useEffect, useState } from "react";
 import { useGetBoardByIdStore } from "../store/slices/kanban";
+import { useBoardIdSelected } from "../store/slices/kanban";
 import "../assets/styles/scroll.css";
 
 const MenuAccount = () => {
@@ -16,6 +17,7 @@ const MenuAccount = () => {
   const [loading, setLoading] = useState<boolean>(false);
   const [show, setShow] = useState<boolean>(false);
   const { board } = useGetBoardByIdStore();
+  const { setBoardId } = useBoardIdSelected();
   const navigate = useNavigate();
 
   //Cerrar Sessión
@@ -25,6 +27,12 @@ const MenuAccount = () => {
       navigate("/");
       handleToggle();
     }
+  };
+
+  //Manda ID del tablero
+  const handleBoardSelected = (id: string) => {
+    setBoardId(id);
+    handleToggle();
   };
 
   //Obtener perfil del usuario
@@ -89,6 +97,7 @@ const MenuAccount = () => {
               type="button"
               styles="w-full h-10 pl-2 bg-transparent flex items-center justify-start gap-2 hover:bg-dashboard-sidebar-hover-bg hover:cursor-pointer"
               key={b._id}
+              onClick={() => handleBoardSelected(b._id)}
             >
               <span className="text-sm text-dashboard-text-color">
                 {b.title}

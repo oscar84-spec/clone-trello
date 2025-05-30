@@ -12,6 +12,7 @@ import { useGetBoardByIdStore } from "../store/slices/kanban";
 import { useUserProfile } from "../store/slices/user";
 import { useState, useEffect } from "react";
 import { getBoardsByUserId } from "../services/kanban";
+import { useBoardIdSelected } from "../store/slices/kanban";
 import "../assets/styles/scroll.css";
 
 type SidebarDashProps = {
@@ -24,6 +25,7 @@ const SidebarDash = ({ areas }: SidebarDashProps) => {
   const { board, setBoard } = useGetBoardByIdStore();
   const [loading, setLoading] = useState<boolean>(false);
   const [isOpen, setIsOpen] = useState<boolean>(false);
+  const { setBoardId } = useBoardIdSelected();
 
   useEffect(() => {
     const getBoards = async () => {
@@ -100,6 +102,7 @@ const SidebarDash = ({ areas }: SidebarDashProps) => {
                 type="button"
                 styles="w-full h-10 pl-2 bg-transparent flex items-center justify-start gap-2 hover:bg-dashboard-sidebar-hover-bg hover:cursor-pointer"
                 key={b._id}
+                onClick={() => setBoardId(b._id)}
               >
                 <span className="text-sm text-dashboard-text-color">
                   {b.title}

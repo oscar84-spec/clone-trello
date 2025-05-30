@@ -13,8 +13,27 @@ interface BoardStore {
   addBoard: (board: BoardState) => void;
 }
 
+interface BoardSelectedStore {
+  boardSelected: BoardState | null;
+  setBoardSelected: (board: BoardState | null) => void;
+}
+
+interface BoardId {
+  boardId: string;
+  setBoardId: (boardId: string) => void;
+}
 export const useGetBoardByIdStore = create<BoardStore>((set) => ({
   board: [],
   setBoard: (board) => set({ board }),
   addBoard: (board) => set((state) => ({ board: [...state.board, board] })),
+}));
+
+export const useBoardSelected = create<BoardSelectedStore>((set) => ({
+  boardSelected: null,
+  setBoardSelected: (board) => set({ boardSelected: board }),
+}));
+
+export const useBoardIdSelected = create<BoardId>((set) => ({
+  boardId: "",
+  setBoardId: (boardId) => set({ boardId }),
 }));
