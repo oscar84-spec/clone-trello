@@ -22,6 +22,19 @@ interface BoardId {
   boardId: string;
   setBoardId: (boardId: string) => void;
 }
+
+interface ListState {
+  _id: string;
+  title: string;
+  cards?: string[];
+}
+
+interface ListStore {
+  list: ListState[];
+  setList: (list: ListState[]) => void;
+  addList: (list: ListState) => void;
+}
+
 export const useGetBoardByIdStore = create<BoardStore>((set) => ({
   board: [],
   setBoard: (board) => set({ board }),
@@ -36,4 +49,10 @@ export const useBoardSelected = create<BoardSelectedStore>((set) => ({
 export const useBoardIdSelected = create<BoardId>((set) => ({
   boardId: "",
   setBoardId: (boardId) => set({ boardId }),
+}));
+
+export const useListStore = create<ListStore>((set) => ({
+  list: [],
+  setList: (list) => set({ list }),
+  addList: (list) => set((state) => ({ list: [...state.list, list] })),
 }));

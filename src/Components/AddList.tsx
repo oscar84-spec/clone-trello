@@ -1,23 +1,35 @@
 import { FormDash, Input, Button } from "./index";
 import { useOpenModalList } from "../store/slices/UI";
 import { useForm } from "react-hook-form";
-import type { ValidationFormList } from "../types";
 import { validationList } from "../validations/board/list";
+import type { List } from "../types/kanban";
+import { createList } from "../services/kanban";
+import { useGetBoardByIdStore } from "../store/slices/kanban";
+import { useBoardIdSelected } from "../store/slices/kanban";
 
 const AddList = () => {
   const { isOpen, toggle } = useOpenModalList();
+  const { boardId } = useBoardIdSelected();
+  const { board } = useGetBoardByIdStore();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<ValidationFormList>();
+  } = useForm<List>();
 
-  const onSubmit = (data: ValidationFormList) => {
-    console.log(data);
-    toggle();
-    reset();
+  const onSubmit = async (data: List) => {
+    try {
+      const idToFetch = boardId || board[0]._id;
+      const res = await createList(idToFetch, data);
+      if (res) {
+        toggle();
+        reset();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
