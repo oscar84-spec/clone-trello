@@ -7,11 +7,15 @@ import { logoutUser } from "../services/users";
 import { useUserProfile } from "../store/slices/user";
 import { getUserProfile } from "../services/users";
 import { useEffect, useState } from "react";
+import { useGetBoardByIdStore } from "../store/slices/kanban";
+import "../assets/styles/scroll.css";
 
 const MenuAccount = () => {
   const { isOpen, handleToggle } = useOpenModalMenuAccount();
   const { user, setUser } = useUserProfile();
   const [loading, setLoading] = useState<boolean>(false);
+  const [show, setShow] = useState<boolean>(false);
+  const { board } = useGetBoardByIdStore();
   const navigate = useNavigate();
 
   //Cerrar Sessión
@@ -40,7 +44,7 @@ const MenuAccount = () => {
   }, [setUser]);
   if (loading) return <p>Cargando...</p>;
   if (!user) return <p>No tienes acceso. Inicia sesión.</p>;
-  console.log(user);
+
   return (
     <div
       className={`menu w-full h-max p-5 absolute top-14 right-0 flex flex-col gap-2 justify-center items-center rounded-md bg-dashboard-list-bg z-40 md:w-72 md:right-5 lg:right-10 xl:right-20 ${
@@ -63,13 +67,36 @@ const MenuAccount = () => {
       <Button
         type="button"
         styles="w-full h-10 pl-2 bg-transparent flex items-center justify-start gap-2 hover:bg-dashboard-sidebar-hover-bg hover:cursor-pointer"
+        onClick={() => setShow(!show)}
       >
-        <ArrowDownIcon styles="size-3 text-icon-color" />
-
-        <ArrowRightIcon styles="size-3 text-icon-color" />
-
+        {show ? (
+          <ArrowDownIcon styles="size-3 text-icon-color" />
+        ) : (
+          <ArrowRightIcon styles="size-3 text-icon-color" />
+        )}
         <span className="text-sm text-dashboard-text-color">Tus tableros</span>
       </Button>
+      {show && (
+        <div
+          className={`w-full pl-4 lg:pl-7 scroll
+           ${board?.length ?? 0 ? "h-max max-h-30 overflow-y-auto" : "h-0"} `}
+        >
+          {loading && (
+            <span className="text-sm text-text-color">Cargando...</span>
+          )}
+          {board?.map((b) => (
+            <Button
+              type="button"
+              styles="w-full h-10 pl-2 bg-transparent flex items-center justify-start gap-2 hover:bg-dashboard-sidebar-hover-bg hover:cursor-pointer"
+              key={b._id}
+            >
+              <span className="text-sm text-dashboard-text-color">
+                {b.title}
+              </span>
+            </Button>
+          ))}
+        </div>
+      )}
       <hr className="border-1 border-text-light/20 w-full" />
       <Button
         type="button"

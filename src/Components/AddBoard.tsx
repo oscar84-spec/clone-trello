@@ -1,22 +1,41 @@
 import { FormDash, Input, Button } from "./index";
 import { useForm } from "react-hook-form";
-import type { ValidationFormBoard } from "../types";
 import { validationBoard } from "../validations/board/board";
 import { useOpenModal } from "../store/slices/UI";
+import { useUserProfile } from "../store/slices/user";
+import { createBoard } from "../services/kanban";
+import { useGetBoardByIdStore } from "../store/slices/kanban";
+import type { Board } from "../types/kanban";
 
 const AddBoard = () => {
   const { isOpen, toggle } = useOpenModal();
+  const { user } = useUserProfile();
+  const { addBoard } = useGetBoardByIdStore();
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<ValidationFormBoard>();
+  } = useForm<Board>();
 
-  const onSubmit = (data: ValidationFormBoard) => {
-    console.log(data);
-    toggle();
-    reset();
+  const onSubmit = async (data: { title: string }) => {
+    if (!user?._id) return;
+
+    const boardData: Board = {
+      userId: user._id,
+      title: data.title,
+    };
+
+    try {
+      const res = await createBoard(boardData);
+      if (res) {
+        addBoard(res.data);
+        toggle();
+        reset();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (

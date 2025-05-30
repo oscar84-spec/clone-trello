@@ -1,0 +1,7 @@
+.scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #5e55b3 #2c283c;
+  ::-webkit-scrollbar-button {
+    display: none;
+  }
+}
