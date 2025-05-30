@@ -21,3 +21,8 @@ export const getBoardById = async (id: string) => {
 export const createList = async (id: string, data: List) => {
   return await api.post(`/boards/${id}/lists`, data);
 };
+
+//Obtener Listas por ID del Tablero
+export const getListsByBoardId = async (id: string) => {
+  return await api.get(`/lists/kanban/${id}`);
+};

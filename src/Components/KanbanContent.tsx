@@ -6,6 +6,8 @@ import { useGetBoardByIdStore } from "../store/slices/kanban";
 import { getBoardById } from "../services/kanban";
 import { useBoardSelected } from "../store/slices/kanban";
 import { useBoardIdSelected } from "../store/slices/kanban";
+import { useListStore } from "../store/slices/kanban";
+import { getListsByBoardId } from "../services/kanban";
 
 type KanbanContentProps = { areas: string };
 const KanbanContent = ({ areas }: KanbanContentProps) => {
@@ -15,7 +17,9 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
   const { board } = useGetBoardByIdStore();
   const { boardSelected, setBoardSelected } = useBoardSelected();
   const { boardId } = useBoardIdSelected();
+  const { list, setList } = useListStore();
 
+  //Cargar el primer tablero o el que seleccione el usuario
   useEffect(() => {
     const loadBoard = async () => {
       setLoading(true);
@@ -40,6 +44,23 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
 
     loadBoard();
   }, [board, boardId, setBoardSelected]);
+
+  //Obtener las listas por ID del Tablero
+  useEffect(() => {
+    const getLists = async () => {
+      const idToFetch = boardId || board[0]?._id;
+      if (!idToFetch) return;
+      try {
+        const res = await getListsByBoardId(idToFetch);
+        if (res) {
+          setList(res.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+    getLists();
+  }, [boardId, board, setList]);
 
   if (loading || error) {
     return (
@@ -80,7 +101,9 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
 
       <section className="w-full h-full p-2 flex gap-5 overflow-x-auto">
         {/* -------------------------- LISTAS -------------------------- */}
-        <ListContent />
+        {list.map((item, index) => (
+          <ListContent item={item} key={index} />
+        ))}
 
         <Button
           type="button"

@@ -6,11 +6,13 @@ import type { List } from "../types/kanban";
 import { createList } from "../services/kanban";
 import { useGetBoardByIdStore } from "../store/slices/kanban";
 import { useBoardIdSelected } from "../store/slices/kanban";
+import { useListStore } from "../store/slices/kanban";
 
 const AddList = () => {
   const { isOpen, toggle } = useOpenModalList();
   const { boardId } = useBoardIdSelected();
   const { board } = useGetBoardByIdStore();
+  const { addList } = useListStore();
 
   const {
     register,
@@ -24,6 +26,7 @@ const AddList = () => {
       const idToFetch = boardId || board[0]._id;
       const res = await createList(idToFetch, data);
       if (res) {
+        addList(res.data);
         toggle();
         reset();
       }
