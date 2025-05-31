@@ -1,6 +1,10 @@
 import { Button, CardContent } from "./index";
 import { useOpenModalCard } from "../store/slices/UI";
 import { DeleteIcon } from "../assets/icons";
+import { useListIdSelected } from "../store/slices/kanban";
+import { useCardStore } from "../store/slices/cards";
+import { getCardsByListId } from "../services/kanban";
+import { useEffect } from "react";
 
 interface ListState {
   _id: string;
@@ -14,6 +18,31 @@ type ListContentProps = {
 
 const ListContent = ({ item }: ListContentProps) => {
   const { toggle } = useOpenModalCard();
+  const { setListId } = useListIdSelected();
+  const { cardsByListId, setCardsForList } = useCardStore();
+
+  useEffect(() => {
+    const getCards = async (id: string) => {
+      try {
+        const res = await getCardsByListId(id);
+        if (res?.data) {
+          setCardsForList(id, res.data);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    if (item?._id) getCards(item._id);
+  }, [item?._id, setCardsForList]);
+
+  const cards = cardsByListId[item._id] || [];
+
+  const handleAddCard = () => {
+    setListId(item._id);
+    toggle();
+  };
+
   return (
     <div className="w-full shrink-0 rounded-md p-2 bg-dashboard-list-bg md:w-72 lista-container">
       <div className="w-full flex justify-between items-center gap-2">
@@ -24,12 +53,14 @@ const ListContent = ({ item }: ListContentProps) => {
       </div>
       <div className="overflow-y-auto lista flex flex-col gap-2">
         {/* -------------------------- TARJETAS -------------------------- */}
-        <CardContent />
+        {cards.map((c, index) => (
+          <CardContent key={index} cards={c} />
+        ))}
       </div>
       <Button
         type="button"
         styles="w-full button-add h-8 bg-dashboard-btn-secondary-bg text-dashboard-btn-secondary-text cursor-pointer transition-colors ease-in-out duration-300 hover:bg-dashboard-btn-secondary-hover"
-        onClick={toggle}
+        onClick={handleAddCard}
       >
         Agregar tarjeta
       </Button>

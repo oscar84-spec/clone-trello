@@ -35,6 +35,11 @@ interface ListStore {
   addList: (list: ListState) => void;
 }
 
+interface ListId {
+  listId: string;
+  setListId: (listId: string) => void;
+}
+
 export const useGetBoardByIdStore = create<BoardStore>((set) => ({
   board: [],
   setBoard: (board) => set({ board }),
@@ -55,4 +60,9 @@ export const useListStore = create<ListStore>((set) => ({
   list: [],
   setList: (list) => set({ list }),
   addList: (list) => set((state) => ({ list: [...state.list, list] })),
+}));
+
+export const useListIdSelected = create<ListId>((set) => ({
+  listId: "",
+  setListId: (listId) => set({ listId }),
 }));

@@ -6,3 +6,11 @@ export type Board = {
 export type List = {
   title: string;
 };
+
+export type Card = {
+  _id: string;
+  title: string;
+  description: string;
+  priority: string;
+  createdAt: string;
+};

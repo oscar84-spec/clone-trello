@@ -1,24 +1,36 @@
 import { FormDash, Input, Button, Badge } from "./index";
 import { useOpenModalCard } from "../store/slices/UI";
 import { priorities } from "../mockData/priority";
-import type { ValidationFormCard } from "../types";
 import { useForm } from "react-hook-form";
 import { validationFormCard } from "../validations/board/card";
+import { useListIdSelected } from "../store/slices/kanban";
+import type { Card } from "../types/kanban";
+import { createCard } from "../services/kanban";
+import { useCardStore } from "../store/slices/cards";
 
 const AddCard = () => {
   const { isOpen, toggle } = useOpenModalCard();
+  const { listId } = useListIdSelected();
+  const { addCardToList } = useCardStore();
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<ValidationFormCard>();
+  } = useForm<Card>();
 
-  const onSubmit = (data: ValidationFormCard) => {
-    console.log(data);
-    toggle();
-    reset();
+  const onSubmit = async (data: Card) => {
+    try {
+      const res = await createCard(listId, data);
+      if (res) {
+        addCardToList(listId, res.data);
+        toggle();
+        reset();
+      }
+    } catch (error) {
+      console.error(error);
+    }
   };
   return (
     <FormDash
@@ -80,7 +92,7 @@ const AddCard = () => {
           type="submit"
           styles="w-full h-10 bg-dashboard-btn-primary-bg/20 text-dashboard-btn-primary-text cursor-pointer transition-colors ease-in-out duration-300 hover:bg-dashboard-btn-primary-hover/20"
         >
-          Crear Tablero
+          Crear Tarjeta
         </Button>
         <Button
           type="button"
