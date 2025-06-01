@@ -5,6 +5,7 @@ import { useListIdSelected } from "../store/slices/kanban";
 import { useCardStore } from "../store/slices/cards";
 import { getCardsByListId } from "../services/kanban";
 import { useEffect } from "react";
+import "../assets/styles/scroll.css";
 
 interface ListState {
   _id: string;
@@ -51,7 +52,7 @@ const ListContent = ({ item }: ListContentProps) => {
         </h3>
         <DeleteIcon styles="text-dashboard-text-color size-5 border-dashboard-text-color border-1 rounded-full transition-colors ease-in-out duration-300 cursor-pointer hover:text-red-500 hover:border-red-500" />
       </div>
-      <div className="overflow-y-auto lista flex flex-col gap-2">
+      <div className="scroll overflow-y-auto lista flex flex-col gap-2">
         {/* -------------------------- TARJETAS -------------------------- */}
         {cards.map((c, index) => (
           <CardContent key={index} cards={c} />

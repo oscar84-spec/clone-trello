@@ -1,6 +1,7 @@
 import { Button, ListContent } from "./index";
 import { useOpenModalList } from "../store/slices/UI";
 import "../assets/styles/kanban.css";
+import "../assets/styles/scroll.css";
 import { useState, useEffect } from "react";
 import { useGetBoardByIdStore } from "../store/slices/kanban";
 import { getBoardById } from "../services/kanban";
@@ -99,7 +100,7 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
       </div>
       {/* -------------------------- KANBAN -------------------------- */}
 
-      <section className="w-full h-full p-2 flex gap-5 overflow-x-auto">
+      <section className="w-full h-full p-2 flex gap-5 overflow-x-auto scroll">
         {/* -------------------------- LISTAS -------------------------- */}
         {list.map((item, index) => (
           <ListContent item={item} key={index} />
