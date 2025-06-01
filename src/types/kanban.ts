@@ -14,3 +14,8 @@ export type Card = {
   priority: string;
   createdAt: string;
 };
+
+export type ListIndex = {
+  oldIndex: number;
+  newIndex: number;
+};

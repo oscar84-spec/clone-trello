@@ -6,6 +6,8 @@ import { useCardStore } from "../store/slices/cards";
 import { getCardsByListId } from "../services/kanban";
 import { useEffect } from "react";
 import "../assets/styles/scroll.css";
+import { useSortable } from "@dnd-kit/sortable";
+import { CSS } from "@dnd-kit/utilities";
 
 interface ListState {
   _id: string;
@@ -44,8 +46,54 @@ const ListContent = ({ item }: ListContentProps) => {
     toggle();
   };
 
+  const {
+    attributes,
+    listeners,
+    setNodeRef,
+    transform,
+    transition,
+    isDragging,
+  } = useSortable({
+    id: item._id,
+    data: {
+      type: "LIST",
+      item,
+    },
+  });
+
+  const style = {
+    transform: CSS.Transform.toString(transform),
+    transition,
+  };
+
+  if (isDragging) {
+    return (
+      <div
+        className="w-full h-full shrink-0 rounded-md p-2 bg-dashboard-list-bg md:w-72 lista-container animate-pulse"
+        ref={setNodeRef}
+        style={style}
+      >
+        <div className="scroll overflow-y-auto lista flex flex-col gap-2">
+          {/* -------------------------- TARJETAS -------------------------- */}
+          {cards.map((c) => (
+            <div
+              key={c._id}
+              className="w-full h-32 max-h-32 overflow-y-auto shrink-0 rounded-md p-2 bg-dashboard-card-bg flex flex-col gap-2 scroll animate-pulse"
+            ></div>
+          ))}
+        </div>
+      </div>
+    );
+  }
+
   return (
-    <div className="w-full shrink-0 rounded-md p-2 bg-dashboard-list-bg md:w-72 lista-container">
+    <div
+      className="w-full h-full shrink-0 rounded-md p-2 bg-dashboard-list-bg md:w-72 lista-container"
+      ref={setNodeRef}
+      {...attributes}
+      {...listeners}
+      style={style}
+    >
       <div className="w-full flex justify-between items-center gap-2">
         <h3 className="text-md text-dashboard-text-color nombre pointer-events-none">
           {item.title}
@@ -54,8 +102,8 @@ const ListContent = ({ item }: ListContentProps) => {
       </div>
       <div className="scroll overflow-y-auto lista flex flex-col gap-2">
         {/* -------------------------- TARJETAS -------------------------- */}
-        {cards.map((c, index) => (
-          <CardContent key={index} cards={c} />
+        {cards.map((c) => (
+          <CardContent key={c._id} cards={c} />
         ))}
       </div>
       <Button
