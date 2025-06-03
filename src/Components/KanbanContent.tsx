@@ -1,4 +1,4 @@
-import { Button, ListContent } from "./index";
+import { Button, CardContent, ListContent } from "./index";
 import { useOpenModalList } from "../store/slices/UI";
 import "../assets/styles/kanban.css";
 import "../assets/styles/scroll.css";
@@ -10,6 +10,7 @@ import { useBoardIdSelected } from "../store/slices/kanban";
 import { useListStore } from "../store/slices/kanban";
 import { getListsByBoardId } from "../services/kanban";
 import { reorderList } from "../services/kanban";
+import { reorderCardSameList } from "../services/kanban";
 import {
   DndContext,
   DragOverlay,
@@ -18,14 +19,24 @@ import {
   useSensor,
   useSensors,
   type DragEndEvent,
+  type DragOverEvent,
   type DragStartEvent,
 } from "@dnd-kit/core";
 import { SortableContext, arrayMove } from "@dnd-kit/sortable";
+import { useCardStore } from "../store/slices/cards";
 
 interface ListState {
   _id: string;
   title: string;
-  cards?: string[];
+  cards?: Card[];
+}
+interface Card {
+  _id: string;
+  title: string;
+  description: string;
+  priority: string;
+  createdAt: string;
+  listId: string;
 }
 
 type KanbanContentProps = { areas: string };
@@ -37,6 +48,8 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
   const { boardSelected, setBoardSelected } = useBoardSelected();
   const { boardId } = useBoardIdSelected();
   const { list, setList } = useListStore();
+  const [activeCardId, setActiveCardId] = useState<Card | null>(null);
+  const { cardsByListId, setCardsForList } = useCardStore();
 
   const ITEM_TYPES = {
     LIST: "LIST",
@@ -112,9 +125,54 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
 
   //Implementando Drag and Drop
   const onDragStart = (event: DragStartEvent) => {
-    if (event.active.data.current?.type === "LIST") {
-      setActiveList(event.active.data.current.item);
+    const { active } = event;
+
+    if (active.data.current?.type === ITEM_TYPES.LIST) {
+      setActiveList(active.data.current.item);
+      setActiveCardId(null);
       return;
+    }
+
+    if (active.data.current?.type === ITEM_TYPES.CARD) {
+      const { cards, listId } = active.data.current;
+      setActiveCardId({ ...cards, listId });
+      setActiveList(null);
+      return;
+    }
+  };
+
+  const onDragOver = async (event: DragOverEvent) => {
+    //Si activeList y overList existen, entonces quiere decir que ambas listas
+    //tienen por lo menos una tarjeta y si además ambos son iguales, quiere
+    //decir que estamos moviendo una tarjeta dentro de la misma lista
+    //Pero si overList no existe, entonces la lista está vacía
+    const { active, over } = event;
+
+    const activeCardId = active.id;
+    const overCardId = over?.id;
+    const activeListId = active.data.current?.listId;
+    const overListId = over?.data.current?.listId;
+
+    if (activeCardId === overCardId) return;
+
+    if (overListId && activeListId === overListId) {
+      const listContainer = cardsByListId[activeListId];
+
+      const oldIndex = listContainer.findIndex(
+        (item) => item._id === activeCardId
+      );
+
+      const newIndex = listContainer.findIndex(
+        (item) => item._id === overCardId
+      );
+
+      if (oldIndex === -1 || newIndex === -1) return;
+
+      const newOrder = arrayMove(listContainer, oldIndex, newIndex);
+      setCardsForList(activeListId, newOrder);
+
+      const idToFetch = overListId;
+      await reorderCardSameList(idToFetch, { oldIndex, newIndex });
     }
   };
 
@@ -147,6 +205,7 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
     <DndContext
       sensors={sensors}
       onDragStart={onDragStart}
+      onDragOver={onDragOver}
       onDragEnd={onDragEnd}
     >
       <section
@@ -191,7 +250,11 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
         </section>
       </section>
       <DragOverlay>
-        {activeList && <ListContent item={activeList} />}
+        {activeList ? (
+          <ListContent item={activeList} />
+        ) : activeCardId ? (
+          <CardContent cards={activeCardId} listId={activeCardId.listId} />
+        ) : null}
       </DragOverlay>
     </DndContext>
   );

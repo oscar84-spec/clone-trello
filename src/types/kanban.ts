@@ -19,3 +19,8 @@ export type ListIndex = {
   oldIndex: number;
   newIndex: number;
 };
+
+export type CardIndex = {
+  oldIndex: number;
+  newIndex: number;
+};

@@ -6,13 +6,18 @@ import { useCardStore } from "../store/slices/cards";
 import { getCardsByListId } from "../services/kanban";
 import { useEffect } from "react";
 import "../assets/styles/scroll.css";
-import { useSortable } from "@dnd-kit/sortable";
+import {
+  useSortable,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import type { Card } from "../types/kanban";
 
 interface ListState {
   _id: string;
   title: string;
-  cards?: string[];
+  cards?: Card[];
 }
 
 type ListContentProps = {
@@ -101,10 +106,15 @@ const ListContent = ({ item }: ListContentProps) => {
         <DeleteIcon styles="text-dashboard-text-color size-5 border-dashboard-text-color border-1 rounded-full transition-colors ease-in-out duration-300 cursor-pointer hover:text-red-500 hover:border-red-500" />
       </div>
       <div className="scroll overflow-y-auto lista flex flex-col gap-2">
-        {/* -------------------------- TARJETAS -------------------------- */}
-        {cards.map((c) => (
-          <CardContent key={c._id} cards={c} />
-        ))}
+        <SortableContext
+          items={cards.map((c) => c._id)}
+          strategy={verticalListSortingStrategy}
+        >
+          {/* -------------------------- TARJETAS -------------------------- */}
+          {cards.map((c) => (
+            <CardContent key={c._id} cards={c} listId={item._id} />
+          ))}
+        </SortableContext>
       </div>
       <Button
         type="button"

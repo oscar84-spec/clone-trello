@@ -1,4 +1,5 @@
 import { create } from "zustand";
+import type { Card } from "../../types/kanban";
 
 interface BoardState {
   _id: string;
@@ -26,7 +27,7 @@ interface BoardId {
 interface ListState {
   _id: string;
   title: string;
-  cards?: string[];
+  cards?: Card[];
 }
 
 interface ListStore {
