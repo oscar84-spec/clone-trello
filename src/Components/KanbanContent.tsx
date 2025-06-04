@@ -186,13 +186,6 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
       });
       setCardsForList(activeListId, updateActiveList);
       setCardsForList(overListId, updateOverList);
-
-      await reorderCardDifferentList({
-        oldIndex,
-        newIndex,
-        activeListId,
-        overListId,
-      });
     }
   };
 
@@ -204,10 +197,11 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
 
     const activeType = active.data.current?.type;
     const overType = over.data.current?.type;
+    const activeListId = active.data.current?.listId;
     const overListId = over.data.current?.listId;
 
     //Se reordenan las listas
-    if (activeType === ITEM_TYPES.LIST && overType === ITEM_TYPES.LIST) {
+    if (activeType && overType === ITEM_TYPES.LIST) {
       //Recuperamos los índices de las listas
       const oldIndex = list.findIndex((item) => item._id === active.id);
       const newIndex = list.findIndex((item) => item._id === over.id);
@@ -223,7 +217,11 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
     }
 
     //Se reordenan las tarjetas dentro de una misma lista
-    if (activeType && overType === ITEM_TYPES.CARD && overListId) {
+    if (
+      activeType &&
+      overType === ITEM_TYPES.CARD &&
+      activeListId === overListId
+    ) {
       const activeCardId = active.id;
       const overCardId = over?.id;
 
@@ -244,6 +242,46 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
 
       const idToFetch = overListId;
       await reorderCardSameList(idToFetch, { oldIndex, newIndex });
+    }
+
+    //Se reordenan las tarjetas de una lista a otra
+    if (
+      activeListId !== overListId &&
+      activeType &&
+      overType === ITEM_TYPES.CARD
+    ) {
+      const activeListContainer = cardsByListId[activeListId];
+      const overListContainer = cardsByListId[overListId];
+
+      const oldIndex = activeListContainer.findIndex(
+        (item) => item._id === active.id
+      );
+
+      const newIndex = overListContainer.findIndex(
+        (item) => item._id === over.id
+      );
+
+      if (oldIndex === -1 || newIndex === -1) return;
+
+      const movingCard = activeListContainer[oldIndex];
+      const updateActiveList = [...activeListContainer];
+      updateActiveList.splice(oldIndex, 1);
+
+      const updateOverList = [...overListContainer];
+
+      const insertIndex = newIndex >= 0 ? newIndex : updateOverList.length;
+
+      updateOverList.splice(insertIndex, 0, {
+        ...movingCard,
+      });
+      setCardsForList(activeListId, updateActiveList);
+      setCardsForList(overListId, updateOverList);
+      await reorderCardDifferentList({
+        oldIndex,
+        newIndex,
+        activeListId,
+        overListId,
+      });
     }
   };
 
