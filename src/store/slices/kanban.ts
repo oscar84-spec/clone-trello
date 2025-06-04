@@ -34,6 +34,7 @@ interface ListStore {
   list: ListState[];
   setList: (list: ListState[]) => void;
   addList: (list: ListState) => void;
+  deletedList: (id: string) => void;
 }
 
 interface ListId {
@@ -61,6 +62,10 @@ export const useListStore = create<ListStore>((set) => ({
   list: [],
   setList: (list) => set({ list }),
   addList: (list) => set((state) => ({ list: [...state.list, list] })),
+  deletedList: (id) =>
+    set((state) => ({
+      list: state.list.filter((l) => l._id !== id),
+    })),
 }));
 
 export const useListIdSelected = create<ListId>((set) => ({

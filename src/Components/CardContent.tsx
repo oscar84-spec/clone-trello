@@ -1,8 +1,10 @@
 import { DeleteIcon } from "../assets/icons";
-import { Badge } from "./index";
+import { Badge, Button } from "./index";
 import "../assets/styles/scroll.css";
 import { useSortable } from "@dnd-kit/sortable";
 import { CSS } from "@dnd-kit/utilities";
+import { useIdAndTitle } from "../store/slices/UI";
+import { useOpenDeleteCard } from "../store/slices/UI";
 interface Card {
   _id: string;
   title: string;
@@ -37,6 +39,16 @@ const CardContent = ({ cards, listId }: CardContentProps) => {
     transition,
   };
 
+  const { setId, setTitle, setListId } = useIdAndTitle();
+  const { handleToggle } = useOpenDeleteCard();
+
+  function deleteCard(id: string, title: string) {
+    setId(id);
+    setTitle(title);
+    setListId(listId);
+    handleToggle();
+  }
+
   if (isDragging) {
     return (
       <div
@@ -57,7 +69,12 @@ const CardContent = ({ cards, listId }: CardContentProps) => {
     >
       <div className="w-full flex justify-between items-center gap-2">
         <Badge priority={cards.priority}>{cards.priority}</Badge>
-        <DeleteIcon styles="text-dashboard-text-color size-7 border-dashboard-text-color border-1 rounded-full transition-colors ease-in-out duration-300 cursor-pointer hover:text-red-500 hover:border-red-500" />
+        <Button
+          type="button"
+          onClick={() => deleteCard(cards._id, cards.title)}
+        >
+          <DeleteIcon styles="text-dashboard-text-color size-7 border-dashboard-text-color border-1 rounded-full transition-colors ease-in-out duration-300 cursor-pointer hover:text-red-500 hover:border-red-500" />
+        </Button>{" "}
       </div>
       <h3 className="text-md text-dashboard-text-color font-medium pointer-events-none">
         {cards.title}

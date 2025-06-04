@@ -12,6 +12,9 @@ import { getListsByBoardId } from "../services/kanban";
 import { reorderList } from "../services/kanban";
 import { reorderCardSameList } from "../services/kanban";
 import { reorderCardDifferentList } from "../services/kanban";
+import { useOpenDeleteBoard } from "../store/slices/UI";
+import { useIdAndTitle } from "../store/slices/UI";
+import { DeleteIcon } from "../assets/icons";
 import {
   DndContext,
   DragOverlay,
@@ -51,6 +54,8 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
   const { list, setList } = useListStore();
   const [activeCardId, setActiveCardId] = useState<Card | null>(null);
   const { cardsByListId, setCardsForList } = useCardStore();
+  const { handleToggle } = useOpenDeleteBoard();
+  const { setId, setTitle } = useIdAndTitle();
 
   const ITEM_TYPES = {
     LIST: "LIST",
@@ -115,15 +120,23 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
   if (loading || error) {
     return (
       <div className="w-full h-full bg-dashboard-kanban-bg rounded-md p-2 flex flex-col gap-2 overflow-hidden">
-        <p className="text-md font-medium text-text-light">
-          {loading ? (
-            <SkeletonKanban />
-          ) : (
-            error || "No hay tableros disponibles"
-          )}
-        </p>
+        {loading ? (
+          <SkeletonKanban />
+        ) : (
+          error || (
+            <span className="text-sm text-text-light">
+              No hay tableros disponibles
+            </span>
+          )
+        )}
       </div>
     );
+  }
+
+  function deleteBoard(id: string, title: string) {
+    setId(id);
+    setTitle(title);
+    handleToggle();
   }
 
   //Implementando Drag and Drop
@@ -207,7 +220,6 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
 
     //Se reordenan las listas
     if (activeType === ITEM_TYPES.LIST && overType === ITEM_TYPES.LIST) {
-      console.log("Entro primero");
       //Recuperamos los índices de las listas
       const oldIndex = list.findIndex((item) => item._id === active.id);
       const newIndex = list.findIndex((item) => item._id === over.id);
@@ -344,15 +356,21 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
           <div className="flex  gap-2 items-center">
             <Button
               type="button"
-              styles="w-max px-2 bg-dashboard-btn-primary-bg text-dashboard-btn-secondary-text cursor-pointer transition-colors ease-in-out duration-300 hover:bg-dashboard-btn-primary-hover"
+              styles="w-max h-8 px-2 bg-dashboard-btn-primary-bg text-dashboard-btn-secondary-text cursor-pointer transition-colors ease-in-out duration-300 hover:bg-dashboard-btn-primary-hover"
             >
               Compartir
             </Button>
             <Button
               type="button"
-              styles="w-max px-2 bg-dashboard-btn-secondary-bg text-dashboard-btn-secondary-text cursor-pointer transition-colors ease-in-out duration-300 hover:bg-dashboard-btn-secondary-hover"
+              styles="w-max h-8 px-2 bg-dashboard-btn-secondary-bg text-dashboard-btn-secondary-text cursor-pointer transition-colors ease-in-out duration-300 hover:bg-dashboard-btn-secondary-hover"
+              onClick={() =>
+                deleteBoard(
+                  boardSelected?._id ?? "",
+                  boardSelected?.title ?? ""
+                )
+              }
             >
-              ...
+              <DeleteIcon styles="text-dashboard-text-color size-5 border-dashboard-text-color border-1 rounded-full transition-colors ease-in-out duration-300 cursor-pointer hover:text-red-500 hover:border-red-500" />
             </Button>
           </div>
         </div>
@@ -362,7 +380,11 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
           {/* -------------------------- LISTAS -------------------------- */}
           <SortableContext items={list.map((l) => l._id)}>
             {list.map((item) => (
-              <ListContent item={item} key={item._id} />
+              <ListContent
+                item={item}
+                key={item._id}
+                boardId={boardSelected?._id ?? ""}
+              />
             ))}
           </SortableContext>
 
@@ -377,7 +399,7 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
       </section>
       <DragOverlay>
         {activeList ? (
-          <ListContent item={activeList} />
+          <ListContent item={activeList} boardId={boardSelected?._id ?? ""} />
         ) : activeCardId ? (
           <CardContent cards={activeCardId} listId={activeCardId.listId} />
         ) : null}

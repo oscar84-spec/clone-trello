@@ -5,6 +5,8 @@ import { useListIdSelected } from "../store/slices/kanban";
 import { useCardStore } from "../store/slices/cards";
 import { getCardsByListId } from "../services/kanban";
 import { useEffect } from "react";
+import { useIdAndTitle } from "../store/slices/UI";
+import { useOpenDeleteList } from "../store/slices/UI";
 import "../assets/styles/scroll.css";
 import {
   useSortable,
@@ -22,12 +24,15 @@ interface ListState {
 
 type ListContentProps = {
   item: ListState;
+  boardId: string;
 };
 
-const ListContent = ({ item }: ListContentProps) => {
+const ListContent = ({ item, boardId }: ListContentProps) => {
   const { toggle } = useOpenModalCard();
   const { setListId } = useListIdSelected();
   const { cardsByListId, setCardsForList } = useCardStore();
+  const { setId, setTitle, setBoardId } = useIdAndTitle();
+  const { handleToggle } = useOpenDeleteList();
 
   useEffect(() => {
     const getCards = async (id: string) => {
@@ -92,6 +97,12 @@ const ListContent = ({ item }: ListContentProps) => {
     );
   }
 
+  function deleteList(id: string, title: string) {
+    setId(id);
+    setTitle(title);
+    setBoardId(boardId);
+    handleToggle();
+  }
   return (
     <div
       className="w-full h-full shrink-0 rounded-md p-2 bg-dashboard-list-bg md:w-72 lista-container"
@@ -104,7 +115,9 @@ const ListContent = ({ item }: ListContentProps) => {
         <h3 className="text-md text-dashboard-text-color nombre pointer-events-none">
           {item.title}
         </h3>
-        <DeleteIcon styles="text-dashboard-text-color size-5 border-dashboard-text-color border-1 rounded-full transition-colors ease-in-out duration-300 cursor-pointer hover:text-red-500 hover:border-red-500" />
+        <Button type="button" onClick={() => deleteList(item._id, item.title)}>
+          <DeleteIcon styles="text-dashboard-text-color size-5 border-dashboard-text-color border-1 rounded-full transition-colors ease-in-out duration-300 cursor-pointer hover:text-red-500 hover:border-red-500" />
+        </Button>
       </div>
       <div className="scroll overflow-y-auto lista flex flex-col gap-2">
         <SortableContext

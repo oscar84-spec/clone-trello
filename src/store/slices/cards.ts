@@ -12,6 +12,7 @@ interface CardStore {
   cardsByListId: Record<string, CardState[]>; // ← clave por ID de lista
   setCardsForList: (listId: string, cards: CardState[]) => void;
   addCardToList: (listId: string, card: CardState) => void;
+  deletedCard: (cardId: string, listId: string) => void;
 }
 
 export const useCardStore = create<CardStore>((set) => ({
@@ -30,6 +31,14 @@ export const useCardStore = create<CardStore>((set) => ({
       cardsByListId: {
         ...state.cardsByListId,
         [listId]: [...(state.cardsByListId[listId] || []), card],
+      },
+    })),
+
+  deletedCard: (listId, cardId) =>
+    set((state) => ({
+      cardsByListId: {
+        ...state.cardsByListId,
+        [listId]: state.cardsByListId[listId]?.filter((c) => c._id !== cardId),
       },
     })),
 }));

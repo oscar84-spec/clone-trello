@@ -55,3 +55,18 @@ export const reorderCardSameList = async (id: string, data: CardIndex) => {
 export const reorderCardDifferentList = async (data: CardIndexOverList) => {
   return await api.put("/lists/cards/move", data);
 };
+
+//Eliminar tableros
+export const deleteBoards = async (id: string) => {
+  return await api.delete(`/delete/boards/${id}`);
+};
+
+//Eliminar listas
+export const deleteLists = async (id: string, boardId: string) => {
+  return await api.delete(`/delete/boards/${boardId}/lists/${id}`);
+};
+
+//Eliminar tarjetas
+export const deleteCards = async (id: string, listId: string) => {
+  return await api.delete(`/delete/boards/lists/${listId}/cards/${id}`);
+};

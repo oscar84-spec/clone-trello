@@ -6,6 +6,9 @@ import {
   AddList,
   AddCard,
   MenuAccount,
+  DeleteBoard,
+  DeleteList,
+  DeleteCard,
 } from "../Components";
 import { dashLinks } from "../mockData/dashboard";
 import { AddIcon, AccountIcon } from "../assets/icons";
@@ -43,6 +46,9 @@ const Dashboard = () => {
       <AddBoard />
       <AddList />
       <AddCard />
+      <DeleteBoard />
+      <DeleteList />
+      <DeleteCard />
       <SectionKanban />
     </main>
   );
