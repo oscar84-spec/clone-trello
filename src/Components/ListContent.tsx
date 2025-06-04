@@ -63,6 +63,7 @@ const ListContent = ({ item }: ListContentProps) => {
     data: {
       type: "LIST",
       item,
+      listId: item._id,
     },
   });
 

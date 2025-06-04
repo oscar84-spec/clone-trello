@@ -129,7 +129,7 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
     const { active } = event;
 
     if (active.data.current?.type === ITEM_TYPES.LIST) {
-      setActiveList(active.data.current.item);
+      setActiveList(active.data.current?.item);
       setActiveCardId(null);
       return;
     }
@@ -150,13 +150,16 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
     const { active, over } = event;
     if (!active || !over) return;
 
-    const activeCardId = active.id;
+    //const activeType = active.data.current?.type;
+    //const overType = over.data.current?.type;
+
+    /* const activeCardId = active.id;
     const overCardId = over?.id;
     const activeListId = active.data.current?.listId;
     const overListId = over?.data.current?.listId;
 
-    if (activeCardId === overCardId) return;
-
+    if (activeCardId === overCardId) return; */
+    /* 
     //De una lista a otra
     if (overListId && activeListId !== overListId) {
       const activeListContainer = cardsByListId[activeListId];
@@ -186,7 +189,7 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
       });
       setCardsForList(activeListId, updateActiveList);
       setCardsForList(overListId, updateOverList);
-    }
+    } */
   };
 
   const onDragEnd = async (event: DragEndEvent) => {
@@ -201,7 +204,8 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
     const overListId = over.data.current?.listId;
 
     //Se reordenan las listas
-    if (activeType && overType === ITEM_TYPES.LIST) {
+    if (activeType === ITEM_TYPES.LIST && overType === ITEM_TYPES.LIST) {
+      console.log("Entro primero");
       //Recuperamos los índices de las listas
       const oldIndex = list.findIndex((item) => item._id === active.id);
       const newIndex = list.findIndex((item) => item._id === over.id);
@@ -218,7 +222,7 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
 
     //Se reordenan las tarjetas dentro de una misma lista
     if (
-      activeType &&
+      activeType === ITEM_TYPES.CARD &&
       overType === ITEM_TYPES.CARD &&
       activeListId === overListId
     ) {
@@ -247,7 +251,7 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
     //Se reordenan las tarjetas de una lista a otra
     if (
       activeListId !== overListId &&
-      activeType &&
+      activeType === ITEM_TYPES.CARD &&
       overType === ITEM_TYPES.CARD
     ) {
       const activeListContainer = cardsByListId[activeListId];
@@ -260,6 +264,42 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
       const newIndex = overListContainer.findIndex(
         (item) => item._id === over.id
       );
+
+      if (oldIndex === -1 || newIndex === -1) return;
+
+      const movingCard = activeListContainer[oldIndex];
+      const updateActiveList = [...activeListContainer];
+      updateActiveList.splice(oldIndex, 1);
+
+      const updateOverList = [...overListContainer];
+
+      const insertIndex = newIndex >= 0 ? newIndex : updateOverList.length;
+
+      updateOverList.splice(insertIndex, 0, {
+        ...movingCard,
+      });
+      setCardsForList(activeListId, updateActiveList);
+      setCardsForList(overListId, updateOverList);
+      await reorderCardDifferentList({
+        oldIndex,
+        newIndex,
+        activeListId,
+        overListId,
+      });
+    }
+
+    if (activeType === ITEM_TYPES.CARD && overType === ITEM_TYPES.LIST) {
+      //Primero debemos verificar si la lista está vacía o se está agregando
+      //tarjetas como último elemento de la lista
+
+      const activeListContainer = cardsByListId[activeListId];
+      const overListContainer = cardsByListId[overListId];
+
+      const oldIndex = activeListContainer.findIndex(
+        (item) => item._id === active.id
+      );
+
+      const newIndex = overListContainer.length;
 
       if (oldIndex === -1 || newIndex === -1) return;
 
