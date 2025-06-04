@@ -1,54 +1,61 @@
-# React + TypeScript + Vite
+# 🗂️ Kanban App
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Una aplicación tipo Trello que permite organizar tareas en tableros, listas y
+tarjetas. Ideal para gestionar proyectos y flujos de trabajo de manera visual e
+intuitiva.
 
-Currently, two official plugins are available:
+## 🚀 Características
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- 🔐 Autenticación de usuarios
+- 🧱 Soporte para múltiples tableros
+- 🧩 Creación de listas
+- 📝 Tarjetas con título, descripción y prioridad
+- 🧲 Drag and drop entre listas (con `@dnd-kit/core`)
+- ⚡ Actualización en tiempo real sin recargar la página
+- 💾 Backend con Node.js + Express
+- 🎨 Frontend con React, Zustand y Tailwind CSS
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 📦 Tecnologías utilizadas
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### Frontend
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- React
+- TypeScript
+- Zustand (state management)
+- Tailwind CSS
+- @dnd-kit/core
+- Axios
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### Backend
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+- Node.js
+- Express
+- MongoDB (Mongoose)
+- JWT (para autenticación)
+- CORS
+
+---
+
+## 📂 Estructura del proyecto
+
+/frontend └── components/ └── pages/ └── store/ └── services/ └── assets/ └──
+App.tsx
+
+/backend └── routes/ └── models/ └── controllers/ └── server.js kanban-app/ ├──
+frontend/ │ ├── components/ # Componentes reutilizables (ListContent,
+CardContent, Button, etc.) │ ├── pages/ # Vistas principales o páginas
+(KanbanContent, etc.) │ ├── services/ # Módulos para hacer peticiones HTTP a la
+API (getBoards, getCards, etc.) │ ├── store/ │ │ └── slices/ # Estados globales
+manejados con Zustand (UI, kanban, cards, etc.) │ ├── assets/ # Iconos, estilos
+personalizados, imágenes, etc. │ ├── App.tsx # Componente raíz de la aplicación
+│ └── main.tsx # Punto de entrada del frontend │ ├── backend/ │ ├──
+controllers/ # Lógica de manejo para cada recurso (boards, lists, cards) │ ├──
+models/ # Esquemas de Mongoose (Board, List, Card, User) │ ├── routes/ # Rutas
+de la API agrupadas por recurso │ ├── middlewares/ # Middlewares como
+autenticación, manejo de errores, etc. │ ├── config/ # Configuración general
+(conexión a MongoDB, etc.) │ ├── server.js # Archivo principal que levanta el
+servidor Express │ └── .env # Variables de entorno │ ├── README.md # Este
+archivo 📝 └── package.json # Configuración del proyecto raíz (o individual por
+frontend/backend)
