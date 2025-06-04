@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Navigate } from "react-router-dom";
 import { verifySession } from "../services/users";
+import { SkeletonDashboard } from "../Components";
 
 type ProtectedRouteProps = {
   children: React.ReactNode;
@@ -23,12 +24,7 @@ const ProtectedRoute = ({ children }: ProtectedRouteProps) => {
     getDataSession();
   }, []);
 
-  if (isAuthenticated === null)
-    return (
-      <span className="text-lg text-text-color font-medium md:text-xl lg:text-2xl">
-        Verificando sesión...
-      </span>
-    );
+  if (isAuthenticated === null) return <SkeletonDashboard />;
 
   return isAuthenticated ? children : <Navigate to="/login" />;
 };

@@ -1,4 +1,4 @@
-import { Button, CardContent, ListContent } from "./index";
+import { Button, CardContent, ListContent, SkeletonKanban } from "./index";
 import { useOpenModalList } from "../store/slices/UI";
 import "../assets/styles/kanban.css";
 import "../assets/styles/scroll.css";
@@ -116,9 +116,11 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
     return (
       <div className="w-full h-full bg-dashboard-kanban-bg rounded-md p-2 flex flex-col gap-2 overflow-hidden">
         <p className="text-md font-medium text-text-light">
-          {loading
-            ? "Cargando tablero..."
-            : error || "No hay tableros disponibles"}
+          {loading ? (
+            <SkeletonKanban />
+          ) : (
+            error || "No hay tableros disponibles"
+          )}
         </p>
       </div>
     );

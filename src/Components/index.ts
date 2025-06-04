@@ -20,3 +20,5 @@ export { default as AddBoard } from "./AddBoard";
 export { default as AddList } from "./AddList";
 export { default as AddCard } from "./AddCard";
 export { default as MenuAccount } from "./MenuAccount";
+export { default as SkeletonDashboard } from "./SkeletonDashboard";
+export { default as SkeletonKanban } from "./SkeletonKanban";
