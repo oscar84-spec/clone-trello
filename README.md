@@ -38,24 +38,7 @@ intuitiva.
 
 ---
 
-## 📂 Estructura del proyecto
+## 📷 Captura de pantalla
 
-/frontend └── components/ └── pages/ └── store/ └── services/ └── assets/ └──
-App.tsx
-
-/backend └── routes/ └── models/ └── controllers/ └── server.js kanban-app/ ├──
-frontend/ │ ├── components/ # Componentes reutilizables (ListContent,
-CardContent, Button, etc.) │ ├── pages/ # Vistas principales o páginas
-(KanbanContent, etc.) │ ├── services/ # Módulos para hacer peticiones HTTP a la
-API (getBoards, getCards, etc.) │ ├── store/ │ │ └── slices/ # Estados globales
-manejados con Zustand (UI, kanban, cards, etc.) │ ├── assets/ # Iconos, estilos
-personalizados, imágenes, etc. │ ├── App.tsx # Componente raíz de la aplicación
-│ └── main.tsx # Punto de entrada del frontend │ ├── backend/ │ ├──
-controllers/ # Lógica de manejo para cada recurso (boards, lists, cards) │ ├──
-models/ # Esquemas de Mongoose (Board, List, Card, User) │ ├── routes/ # Rutas
-de la API agrupadas por recurso │ ├── middlewares/ # Middlewares como
-autenticación, manejo de errores, etc. │ ├── config/ # Configuración general
-(conexión a MongoDB, etc.) │ ├── server.js # Archivo principal que levanta el
-servidor Express │ └── .env # Variables de entorno │ ├── README.md # Este
-archivo 📝 └── package.json # Configuración del proyecto raíz (o individual por
-frontend/backend)
+![Captura de pantalla](/public/PicDemo.png)
+![Captura de pantalla](/public/TrelloDemo.png)
