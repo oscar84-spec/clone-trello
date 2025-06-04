@@ -4,6 +4,7 @@ import type { List } from "../types/kanban";
 import type { Card } from "../types/kanban";
 import type { ListIndex } from "../types/kanban";
 import type { CardIndex } from "../types/kanban";
+import type { CardIndexOverList } from "../types/kanban";
 
 //Crear Tableros
 export const createBoard = async (data: Board) => {
@@ -48,4 +49,9 @@ export const reorderList = async (id: string, data: ListIndex) => {
 //Reordenar tarjetas dentro de una misma lista
 export const reorderCardSameList = async (id: string, data: CardIndex) => {
   return await api.put(`/lists/${id}/cards/reorder`, data);
+};
+
+//Reordenar tarjetas entre listas
+export const reorderCardDifferentList = async (data: CardIndexOverList) => {
+  return await api.put("/lists/cards/move", data);
 };

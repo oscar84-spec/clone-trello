@@ -11,6 +11,7 @@ import { useListStore } from "../store/slices/kanban";
 import { getListsByBoardId } from "../services/kanban";
 import { reorderList } from "../services/kanban";
 import { reorderCardSameList } from "../services/kanban";
+import { reorderCardDifferentList } from "../services/kanban";
 import {
   DndContext,
   DragOverlay,
@@ -147,6 +148,7 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
     //decir que estamos moviendo una tarjeta dentro de la misma lista
     //Pero si overList no existe, entonces la lista está vacía
     const { active, over } = event;
+    if (!active || !over) return;
 
     const activeCardId = active.id;
     const overCardId = over?.id;
@@ -155,6 +157,7 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
 
     if (activeCardId === overCardId) return;
 
+    //Dentro de una misma lista
     if (overListId && activeListId === overListId) {
       const listContainer = cardsByListId[activeListId];
 
@@ -166,13 +169,51 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
         (item) => item._id === overCardId
       );
 
-      if (oldIndex === -1 || newIndex === -1) return;
+      if (oldIndex === -1) return;
 
       const newOrder = arrayMove(listContainer, oldIndex, newIndex);
       setCardsForList(activeListId, newOrder);
 
       const idToFetch = overListId;
       await reorderCardSameList(idToFetch, { oldIndex, newIndex });
+    }
+
+    //De una lista a otra
+    if (overListId && activeListId !== overListId) {
+      const activeListContainer = cardsByListId[activeListId];
+      const overListContainer = cardsByListId[overListId];
+
+      const oldIndex = activeListContainer.findIndex(
+        (item) => item._id === activeCardId
+      );
+
+      const newIndex = overListContainer.findIndex(
+        (item) => item._id === overCardId
+      );
+
+      if (oldIndex === -1 || newIndex === -1) return;
+
+      const movingCard = activeListContainer[oldIndex];
+
+      const updateActiveList = [...activeListContainer];
+      updateActiveList.splice(oldIndex, 1);
+
+      const updateOverList = [...overListContainer];
+
+      const insertIndex = newIndex >= 0 ? newIndex : updateOverList.length;
+
+      updateOverList.splice(insertIndex, 0, {
+        ...movingCard,
+      });
+      setCardsForList(activeListId, updateActiveList);
+      setCardsForList(overListId, updateOverList);
+
+      await reorderCardDifferentList({
+        oldIndex,
+        newIndex,
+        activeListId,
+        overListId,
+      });
     }
   };
 

@@ -24,3 +24,10 @@ export type CardIndex = {
   oldIndex: number;
   newIndex: number;
 };
+
+export type CardIndexOverList = {
+  oldIndex: number;
+  newIndex: number;
+  activeListId: string;
+  overListId: string;
+};
