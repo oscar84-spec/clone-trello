@@ -4,7 +4,7 @@ import type { ValidationFormLogin, ValidationForm } from "../types";
 //Iniciar Sesión
 export const loginUser = async (data: ValidationFormLogin) => {
   try {
-    return await api.post("login", data, {
+    return await api.post("/login", data, {
       withCredentials: true,
     });
   } catch (error) {
