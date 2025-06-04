@@ -157,27 +157,6 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
 
     if (activeCardId === overCardId) return;
 
-    //Dentro de una misma lista
-    if (overListId && activeListId === overListId) {
-      const listContainer = cardsByListId[activeListId];
-
-      const oldIndex = listContainer.findIndex(
-        (item) => item._id === activeCardId
-      );
-
-      const newIndex = listContainer.findIndex(
-        (item) => item._id === overCardId
-      );
-
-      if (oldIndex === -1) return;
-
-      const newOrder = arrayMove(listContainer, oldIndex, newIndex);
-      setCardsForList(activeListId, newOrder);
-
-      const idToFetch = overListId;
-      await reorderCardSameList(idToFetch, { oldIndex, newIndex });
-    }
-
     //De una lista a otra
     if (overListId && activeListId !== overListId) {
       const activeListContainer = cardsByListId[activeListId];
@@ -225,7 +204,9 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
 
     const activeType = active.data.current?.type;
     const overType = over.data.current?.type;
+    const overListId = over.data.current?.listId;
 
+    //Se reordenan las listas
     if (activeType === ITEM_TYPES.LIST && overType === ITEM_TYPES.LIST) {
       //Recuperamos los índices de las listas
       const oldIndex = list.findIndex((item) => item._id === active.id);
@@ -239,6 +220,30 @@ const KanbanContent = ({ areas }: KanbanContentProps) => {
 
       const idToFetch = boardId || board[0]._id;
       await reorderList(idToFetch, { oldIndex, newIndex });
+    }
+
+    //Se reordenan las tarjetas dentro de una misma lista
+    if (activeType && overType === ITEM_TYPES.CARD && overListId) {
+      const activeCardId = active.id;
+      const overCardId = over?.id;
+
+      const listContainer = cardsByListId[overListId];
+
+      const oldIndex = listContainer.findIndex(
+        (item) => item._id === activeCardId
+      );
+
+      const newIndex = listContainer.findIndex(
+        (item) => item._id === overCardId
+      );
+
+      if (oldIndex === -1) return;
+
+      const newOrder = arrayMove(listContainer, oldIndex, newIndex);
+      setCardsForList(overListId, newOrder);
+
+      const idToFetch = overListId;
+      await reorderCardSameList(idToFetch, { oldIndex, newIndex });
     }
   };
 
